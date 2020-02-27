@@ -3,7 +3,7 @@
 
 *This repo is currently under construction. The complete version of code will be released by June. 14, 2020*
 
-Wang Shen
+Wang Shen,
 [Wenbo Bao](https://sites.google.com/view/wenbobao/home),
 [Guangtao Zhai](https://scholar.google.ca/citations?user=E6zbSYgAAAAJ&hl=zh-CN),
 Li Chen,
