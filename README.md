@@ -1,5 +1,5 @@
 # BIN (Blurry Video Frame Interpolation)
-[Project]() **|** [Paper]()
+[Project]() **|** [Paper](https://arxiv.org/abs/2002.12259)
 
 *This repo is currently under construction. The complete version of code will be released by June. 14, 2020*
 
@@ -25,14 +25,12 @@ IEEE Conference on Computer Vision and Pattern Recognition, Seattle, CVPR 2020
 1. [Training New Models](#training-new-models) 
 
 ### Introduction
-<!--We propose the **D**epth-**A**ware video frame **IN**terpolation (**DAIN**) model to explicitly detect the occlusion by exploring the depth cue.
-We develop a depth-aware flow projection layer to synthesize intermediate flows that preferably sample closer objects than farther ones.
-Our method achieves state-of-the-art performance on the Middlebury dataset. 
-We provide videos [here](https://www.youtube.com/watch?v=-f8f0igQi5I&t=5s).
--->
-We propose a **B**lurry video frame **IN**terpolation method to reduce motion blur and up-convert frame rate simultaneously
+
+We propose a **B**lurry video frame **IN**terpolation method to reduce motion blur and up-convert frame rate simultaneously.
+We provide videos [here](https://www.youtube.com/watch?v=C_bL9YQJU1w).
 
 <!--![teaser](http://vllab.ucmerced.edu/wlai24/LapSRN/images/emma_text.gif)-->
+
 
 <!--[![teaser](https://img.youtube.com/vi/icJ0WbPsE20/0.jpg)](https://www.youtube.com/watch?v=icJ0WbPsE20&feature=youtu.be)
 <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/icJ0WbPsE20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
