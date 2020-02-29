@@ -90,6 +90,7 @@ https://drive.google.com/open?id=1CgCLmVC_WTVTAcA_IdWbLqR8MS18zHoa
 ### Citation
 If you find the code and datasets useful in your research, please cite:
 
+    [Frame interpolation for blurry video](https://github.com/laomao0/BIN)
      @inproceedings{BIN,
         author    = {Shen, Wang and Bao, Wenbo and Zhai, Guangtao and Chen, Li and Min, Xiongkuo and Gao, Zhiyong}, 
         title     = {Blurry Video Frame Interpolation}, 
@@ -97,12 +98,15 @@ If you find the code and datasets useful in your research, please cite:
         year      = {2020}
     }
 
+    [Frame interpolation for normal video](https://github.com/baowenbo/DAIN/)
     @inproceedings{DAIN,
         author    = {Bao, Wenbo and Lai, Wei-Sheng and Ma, Chao and Zhang, Xiaoyun and Gao, Zhiyong and Yang, Ming-Hsuan}, 
         title     = {Depth-Aware Video Frame Interpolation}, 
         booktitle = {IEEE Conference on Computer Vision and Pattern Recognition},
         year      = {2019}
     }
+
+    [Frame interpolation MEMC architecture](https://github.com/baowenbo/MEMC-Net)
     @article{MEMC-Net,
          title={MEMC-Net: Motion Estimation and Motion Compensation Driven Neural Network for Video Interpolation and Enhancement},
          author={Bao, Wenbo and Lai, Wei-Sheng, and Zhang, Xiaoyun and Gao, Zhiyong and Yang, Ming-Hsuan},
