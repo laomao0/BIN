@@ -1,0 +1,68 @@
+#### general settings
+name: adobe_stage4
+use_tb_logger: true
+model: bin
+distortion: blur
+scale: 4
+gpu_ids: [2,3]
+
+#### datasets
+datasets:
+  train:
+    name: train
+    mode: BIN
+    random_reverse: false
+    border_mode: false
+    dataroot_GT: /DATA/wangshen_data/Adobe_240fps_dataset/Adobe_240fps_blur
+    dataroot_LQ: /DATA/wangshen_data/Adobe_240fps_dataset/Adobe_240fps_blur
+    use_shuffle: true
+    n_workers: 3  # per GPU, vscode debug must be 0
+    batch_size: 2
+    LQ_size: [3, 128, 256]
+    use_flip: true
+    use_rot: true
+    color: RGB
+  val:
+    name: test
+    mode: BIN
+    task: deblur_interp
+    dataroot_GT: /DATA/wangshen_data/Adobe_240fps_dataset/Adobe_240fps_blur/
+    dataroot_LQ: /DATA/wangshen_data/Adobe_240fps_dataset/Adobe_240fps_blur/
+    LQ_size: [3, 128, 256]
+    cache_data: false
+    padding: new_info
+    save_path:  /DATA/wangshen_data/Adobe_240fps_dataset/Results
+
+#### network structures
+network_G:
+  which_model_G: bin_stage4
+  nframes: 6
+  version: 2
+
+#### path
+path:
+  pretrain_model_G: /home/shenwang/PycharmProjects/Deblur/Deblur_Interp/src_github/BIN/model_weights/adobe_bin.pth
+  save_path : /DATA/wangshen_data/Adobe_240fps_dataset/
+  strict_load: true
+  resume_state: ~
+
+#### training settings: learning rate scheme, loss
+train:
+  input_frames: 6
+  lr_G: !!float 1e-4
+  lr_scheme: ReduceLROnPlateau
+  beta1: 0.9
+  beta2: 0.99
+  factor: 0.2
+  patience: 1
+  epoch: 100
+  pixel_criterion: cb
+  pixel_weight: 1.0
+  ssim_weight: 0.01
+  val_freq: !!float  1e4
+  manual_seed: 0
+
+#### logger
+logger:
+  print_freq:  100
+  save_checkpoint_freq: !!float 5000
