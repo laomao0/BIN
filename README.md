@@ -78,41 +78,42 @@ Download repository:
 1. Download the Adobe240 original videos http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/DeepVideoDeblurring_Dataset_Original_High_FPS_Videos.zip
 
 2. Then de-compress those videos into a folder: Adobe_240fps_original_high_fps_videos
-   The structure of the folder is as following:
 
-   Adobe_240fps_original_high_fps_videos -- 720p_240fps_1.mov
-                                         -- 720p_240fps_2.mov
-                                         -- 720p_240fps_3.mov
-                                         -- ...
+The structure of the folder is as following:
+
+    Adobe_240fps_original_high_fps_videos -- 720p_240fps_1.mov
+                                            -- 720p_240fps_2.mov
+                                            -- 720p_240fps_3.mov
+                                            -- ...
 
 3. Make the Adobe240 blur dataset by averaging N frames.
 
-   We averaging 11 consecutive frames to synthesize 1 blur image.
-   For example, the frame indexs of a 240-fps video are 0 1 2 3 4 5 6 7 8 9 10 11 12...
-   We average 0-11 frames to synthesize the blur frame 0, average 8-19 frames to synthesize the blur frame 1.
-   The frame rate of synthesized blur video is 30-fps.
+We averaging 11 consecutive frames to synthesize 1 blur image.
+For example, the frame indexs of a 240-fps video are 0 1 2 3 4 5 6 7 8 9 10 11 12...
+We average 0-11 frames to synthesize the blur frame 0, average 8-19 frames to synthesize the blur frame 1.
+The frame rate of synthesized blur video is 30-fps.
 
-   $ cd data_scripts/adobe240fps
-   $ ./create_dataset_blur_N_frames_average_Adobe.sh
+    $ cd data_scripts/adobe240fps
+    $ ./create_dataset_blur_N_frames_average_Adobe.sh
 
-   If you do not want to create the training set, setting --enable_train to be 0.
+If you do not want to create the training set, setting --enable_train to be 0.
 
 4. Check the dataset
 
-   The script of step 3 will create the dataset at path specified at --dataset_folder
-   It contains 7 folders, including full_sharp, test, test_blur, test_list, train, train_blur, train_list
+The script of step 3 will create the dataset at path specified at --dataset_folder
+It contains 7 folders, including full_sharp, test, test_blur, test_list, train, train_blur, train_list
 
-   full_sharp: contain all de-compressed frames, not used in this project.
-   test/train: contain the sharp test/train frams at 240-fps.
-   test_blur/train_blur: contain the blur test/train frames at 30-fps.
-   test_list/train_list: contain im_list files used for dataloader.
+full_sharp: contain all de-compressed frames, not used in this project.
+test/train: contain the sharp test/train frams at 240-fps.
+test_blur/train_blur: contain the blur test/train frames at 30-fps.
+test_list/train_list: contain im_list files used for dataloader.
 
-   test/train structure:
-                         folder_1 -- 00001.png 00002.png ....
-                         folder_2 -- 00001.png 00002.png ....
-   test_blur/train_blur structure:
-                         folder_1 -- 00017.png 00025.png ....
-                         folder_2 -- 00017.png 00025.png ....
+test/train structure:
+                        folder_1 -- 00001.png 00002.png ....
+                        folder_2 -- 00001.png 00002.png ....
+test_blur/train_blur structure:
+                        folder_1 -- 00017.png 00025.png ....
+                        folder_2 -- 00017.png 00025.png ....
 
 ### Testing Pre-trained Models
 
@@ -123,17 +124,17 @@ Download repository:
 
 2. run the script
 
-    bash run_bin_stage4.sh
+    $ bash run_bin_stage4.sh
 
 3. check the results
 
-   the logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
+the logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
 
-   test_summary.log records PSNR, SSIM of each video folders
+test_summary.log records PSNR, SSIM of each video folders
 
 ### Training New Models
 
-    If you want to train the model on our own data
+If you want to train the model on our own data
 
     $ cd BIN
     $ bash train.sh
