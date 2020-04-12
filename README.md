@@ -1,7 +1,7 @@
 # BIN (Blurry Video Frame Interpolation)
 [Project]() **|** [Paper](https://arxiv.org/abs/2002.12259)
 
-*This repo is currently under construction. The complete version of code will be released by June. 14, 2020*
+<!-- *This repo is currently under construction. The complete version of code will be released by June. 14, 2020* -->
 
 [Wang Shen](https://sites.google.com/view/wangshen94),
 [Wenbo Bao](https://sites.google.com/view/wenbobao/home),
@@ -89,6 +89,7 @@ The structure of the folder is as following:
 3. Make the Adobe240 blur dataset by averaging N frames.
 
 We averaging 11 consecutive frames to synthesize 1 blur image.
+
 For example, the frame indexs of a 240-fps video are 0 1 2 3 4 5 6 7 8 9 10 11 12...
 We average 0-11 frames to synthesize the blur frame 0, average 8-19 frames to synthesize the blur frame 1.
 The frame rate of synthesized blur video is 30-fps.
@@ -103,17 +104,17 @@ If you do not want to create the training set, setting --enable_train to be 0.
 The script of step 3 will create the dataset at path specified at --dataset_folder
 It contains 7 folders, including full_sharp, test, test_blur, test_list, train, train_blur, train_list
 
-full_sharp: contain all de-compressed frames, not used in this project.
-test/train: contain the sharp test/train frams at 240-fps.
-test_blur/train_blur: contain the blur test/train frames at 30-fps.
-test_list/train_list: contain im_list files used for dataloader.
+    full_sharp: contain all de-compressed frames, not used in this project.
+    test/train: contain the sharp test/train frams at 240-fps.
+    test_blur/train_blur: contain the blur test/train frames at 30-fps.
+    test_list/train_list: contain im_list files used for dataloader.
 
-test/train structure:
-                        folder_1 -- 00001.png 00002.png ....
-                        folder_2 -- 00001.png 00002.png ....
-test_blur/train_blur structure:
-                        folder_1 -- 00017.png 00025.png ....
-                        folder_2 -- 00017.png 00025.png ....
+    test/train structure:
+                            folder_1 -- 00001.png 00002.png ....
+                            folder_2 -- 00001.png 00002.png ....
+    test_blur/train_blur structure:
+                            folder_1 -- 00017.png 00025.png ....
+                            folder_2 -- 00017.png 00025.png ....
 
 ### Testing Pre-trained Models
 
