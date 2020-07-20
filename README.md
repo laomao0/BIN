@@ -22,7 +22,7 @@ IEEE Conference on Computer Vision and Pattern Recognition, Seattle, CVPR 2020
 1. [Installation](#installation)
 1. [Testing Pre-trained Models](#testing-pre-trained-models)
 1. [Downloading Results](#downloading-results)
-1. [Training New Models](#training-new-models) 
+<!-- 1. [Training New Models](#training-new-models)  -->
 
 ### Introduction
 
@@ -133,12 +133,12 @@ the logging file and images are saved at --output_path/60fps_test_results/adobe_
 
 test_summary.log records PSNR, SSIM of each video folders
 
-### Training New Models
+<!-- ### Training New Models
 
 If you want to train the model on our own data
 
     $ cd BIN
-    $ bash train.sh
+    $ bash train.sh -->
 
 
 
