@@ -89,7 +89,7 @@ Download repository:
 
    If you want to directly download the testset, please refer to 5.
 
-1. Download the Adobe240 original videos http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/DeepVideoDeblurring_Dataset_Original_High_FPS_Videos.zip
+1. Download the Adobe240 original [videos](http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/DeepVideoDeblurring_Dataset_Original_High_FPS_Videos.zip)
 
 2. Then de-compress those videos into a folder: Adobe_240fps_dataset/Adobe_240fps_original_high_fps_videos
 
@@ -133,24 +133,23 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 5. For those who only want the Adobe240 blur testset with ground-truth frames, we provide download links.
    For the Adobe240 blur train set, which is too large, we suggest users to use high-fps vidoes to generate.
 
-   Adobe_240fps_dataset/test_blur: https://drive.google.com/file/d/1Lt__BO1cshm6rayCVmDJfgMxT2cLqS5s/view?usp=sharing
-   Adobe_240fps_dataset/test: https://drive.google.com/file/d/11QLEfgh6JMf1FRy9XY798IkzwAOWXNk_/view?usp=sharing
-   Adobe_240fps_dataset/test_list: https://drive.google.com/file/d/1Bf_Mp_ny2N1bhUkVCo3kBYgLCWPe5Xf7/view?usp=sharing
-
+   Adobe_240fps_dataset/test_blur: [link](https://drive.google.com/file/d/1Lt__BO1cshm6rayCVmDJfgMxT2cLqS5s/view?usp=sharing)
+   Adobe_240fps_dataset/test: [link](https://drive.google.com/file/d/11QLEfgh6JMf1FRy9XY798IkzwAOWXNk_/view?usp=sharing)
+   Adobe_240fps_dataset/test_list: [link](https://drive.google.com/file/d/1Bf_Mp_ny2N1bhUkVCo3kBYgLCWPe5Xf7/view?usp=sharing)
 
 
 ### Demo using Pre-trained Models
 
 1. Download pretrained model trained on Adobe240 blur training set,
-
+    
     $ cd model_weights
-    $ download the model for Adobe240 dataset: https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9
+    $ download the model for [Adobe240 dataset](https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9)
 
 2. Download the demo vidoes
 
     $ cd demo_vidoes
     $ mkdir demo_blur
-    $ download the data at https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing, then put it into demo_blur folder 
+    $ download the data at [link](https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing), then put it into demo_blur folder 
 
 
 3. Run the script
@@ -166,7 +165,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 1. Download pretrained model trained on Adobe240 blur training set,
 
     $ cd model_weights
-    $ download the model for Adobe240 dataset https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing
+    $ download the model for [Adobe240 dataset]( https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing)
 
 2. Run the script
 
@@ -183,9 +182,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
     Frame Interpolation PSNR/SSIM : 33.31/0.9372
     Frame Deblurring    PSNR/SSIM : 33.33/0.9319
 
-4. Besides, we also provide our results on adobe240 blur test set here: 
-
-   https://drive.google.com/file/d/1Bf3PokOqXol2z6_W819bLwU_tZrxDoxe/view?usp=sharing
+4. Besides, we also provide our results on adobe240 blur test set [here](https://drive.google.com/file/d/1Bf3PokOqXol2z6_W819bLwU_tZrxDoxe/view?usp=sharing): 
    
    the downloaded zip file includes:
 
@@ -216,7 +213,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 
     $ cd Vimeo90k_SR
     $ mkdir vimeo_septuplet
-    $ download http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip [82G]
+    $ download [link](http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip) [82G]
 
 2. Create dataset using matlab bicubic function
 
