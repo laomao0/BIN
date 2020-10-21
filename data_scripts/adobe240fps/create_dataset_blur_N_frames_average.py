@@ -88,9 +88,6 @@ def create_clips_overlap(video, root, destination, destionation_blur, listpath):
 
     im_list = []
 
-    # files = os.listdir(root)
-    # files = sorted(files)
-
     files = [os.path.splitext(vi)[0] for vi in video]
 
     # Iterate over each folder containing extracted video frames.
@@ -107,15 +104,11 @@ def create_clips_overlap(video, root, destination, destionation_blur, listpath):
         window_total_num = math.floor(n_length/window_middle_delta) - 2
         num_blurry = 1
 
-        # im_list.append(str(file))
 
         for i in range(0, window_total_num):
 
             # create one folder for each outer window
             folderCounter += 1
-            # os.makedirs("{}/{}".format(destination, str(folderCounter).zfill(6)), exist_ok=True)
-            # im_list.append(str(folderCounter).zfill(6))
-            # os.makedirs("{}/{}".format(destination, str(file)), exist_ok=True)
 
             mid_latent_list = range(blurry_frame_idx[0] - full_half_range, blurry_frame_idx[0] + full_half_range + 1)
 
@@ -140,11 +133,6 @@ def create_clips_overlap(video, root, destination, destionation_blur, listpath):
                 os.makedirs(os.path.join(destionation_blur, file), exist_ok=True)
                 imsave(os.path.join(destionation_blur, str(file), blur_image), sum)
 
-
-            # # copy the sharp frames as the latent frame
-            # for j in mid_latent_list:
-            #     image_name = "{}".format(j+1).zfill(5)+".png"
-            #     copy("{}/{}/{}".format(root, file,image_name),"{}/{}/{}".format(destination, str(folderCounter).zfill(6), image_name))  # move
 
 
             window_middle = window_middle + window_middle_delta
@@ -209,8 +197,6 @@ def main():
             for video in videos:
                 extract_frames([video], args.videos_folder, extractPath)
                 create_clips_overlap([video], extractPath, trainPath, trainPath_blur, trainPath_list)
-            # extract_frames(videos, args.videos_folder, extractPath)
-            # create_clips_overlap(extractPath, trainPath, trainPath_blur)
 
 
 

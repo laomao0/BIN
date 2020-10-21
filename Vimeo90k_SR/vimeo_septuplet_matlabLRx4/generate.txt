@@ -1,0 +1,3 @@
+$ cd data_scripts
+$ cd vimeo90k_sr
+$ matlab -nodesktop -nosplash -r generate_LR_Vimeo90K

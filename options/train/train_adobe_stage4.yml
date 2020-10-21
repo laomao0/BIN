@@ -41,7 +41,7 @@ network_G:
 
 #### path
 path:
-  pretrain_model_G: /home/shenwang/PycharmProjects/Deblur/Deblur_Interp/src_github/BIN/model_weights/adobe_bin.pth
+  pretrain_model_G: ./model_weights/adobe_bin.pth
   save_path : /DATA/wangshen_data/Adobe_240fps_dataset/
   strict_load: true
   resume_state: ~

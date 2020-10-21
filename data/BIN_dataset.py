@@ -24,7 +24,6 @@ class BINDataset(data.Dataset):
         self.GT_root, self.LQ_root = opt['dataroot_GT'], opt['dataroot_LQ']
         self.data_type = self.opt['data_type']
         self.input_frame_size = self.opt['LQ_size']
-        #### Generate data info and cache data
         self.all_paths , _ = self._make_dataset_deep_long_(dir=self.LQ_root,sharp_index=(2,3),mode=opt['name'])
         print("\n Dataset Initialized\n")
 
@@ -48,8 +47,6 @@ class BINDataset(data.Dataset):
         img_LQs = torch.from_numpy(np.ascontiguousarray(np.transpose(img_LQs, (0, 3, 1, 2)))).float()
         img_GTenh = torch.from_numpy(np.ascontiguousarray(np.transpose(img_GTenh, (0, 3, 1, 2)))).float()
         img_GTinp = torch.from_numpy(np.ascontiguousarray(np.transpose(img_GTinp, (0, 3, 1, 2)))).float()
-
-        # print("Load here")
 
         return {'LQs': img_LQs,
                 'GTenh': img_GTenh,
@@ -111,16 +108,12 @@ class BINDataset(data.Dataset):
             I8_path = im_path_pair[2][1]
             I10_path = im_path_pair[2][0]
 
-        # input blurry B1 B3 B5 B7 B9
         B1 = util.read_img(B1_path)
         B3 = util.read_img(B3_path)
         B5 = util.read_img(B5_path)
         B7 = util.read_img(B7_path)
         B9 = util.read_img(B9_path)
         B11 = util.read_img(B11_path)
-
-        # groud truth sharp I1 I3 I5 I7 I9
-        # print('I1', I1_path)
 
         I1 = util.read_img(I1_path)
         I3 = util.read_img(I3_path)
@@ -129,17 +122,13 @@ class BINDataset(data.Dataset):
         I9 = util.read_img(I9_path)
         I11 = util.read_img(I11_path)
 
-        # interpolated sharp GT
         I2 = util.read_img(I2_path)
-
-        # print('I4', I4_path)
 
         I4 = util.read_img(I4_path)
         I6 = util.read_img(I6_path)
         I8 = util.read_img(I8_path)
         I10 = util.read_img(I10_path)
 
-        # Todo: Do use crop
         h_offset = random.choice(range(352 - input_frame_size[1] + 1))
         w_offset = random.choice(range(640 - input_frame_size[2] + 1))
 
@@ -165,7 +154,7 @@ class BINDataset(data.Dataset):
 
         if data_aug:
             if random.randint(0, 1):
-                # input blurry B1 B3 B5 B7 B9
+                
                 B1 = np.fliplr(B1)
                 B3 = np.fliplr(B3)
                 B5 = np.fliplr(B5)
@@ -173,7 +162,6 @@ class BINDataset(data.Dataset):
                 B9 = np.fliplr(B9)
                 B11 = np.fliplr(B11)
 
-                # groud truth sharp I1 I3 I5 I7 I9
                 I1 = np.fliplr(I1)
                 I3 = np.fliplr(I3)
                 I5 = np.fliplr(I5)
@@ -181,23 +169,13 @@ class BINDataset(data.Dataset):
                 I9 = np.fliplr(I9)
                 I11 = np.fliplr(I11)
 
-                # interpolated sharp GT
+
                 I2 = np.fliplr(I2)
                 I4 = np.fliplr(I4)
                 I6 = np.fliplr(I6)
                 I8 = np.fliplr(I8)
                 I10 = np.fliplr(I10)
 
-            # if random.randint(0, 1):
-            #     B0 = np.flipud(B0)
-            #     B1 = np.flipud(B1)
-            #     B2 = np.flipud(B2)
-            #     B3 = np.flipud(B3)
-            #     B4 = np.flipud(B4)
-            #     B5 = np.flipud(B5)
-            #     I2 = np.flipud(I2)
-            #     I3 = np.flipud(I3)
-            #     It = np.flipud(It)
 
         return [B1, B3, B5, B7, B9, B11], \
             [I1, I3, I5, I7, I9, I11], \

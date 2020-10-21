@@ -1,7 +1,9 @@
 # BIN (Blurry Video Frame Interpolation)
-[Project]() **|** [Paper](https://arxiv.org/abs/2002.12259)
+[Project]() **|** [Paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Shen_Blurry_Video_Frame_Interpolation_CVPR_2020_paper.pdf)
 
-<!-- *This repo is currently under construction. The complete version of code will be released by June. 14, 2020* -->
+<!-- # PRF (Video Frame Interpolation and Enhancement via Pyramid Recurrent Framework)
+[Project]() **|** [Paper](To be published in TIP) -->
+
 
 [Wang Shen](https://sites.google.com/view/wangshen94),
 [Wenbo Bao](https://sites.google.com/view/wenbobao/home),
@@ -14,7 +16,6 @@ Zhiyong Gao
 IEEE Conference on Computer Vision and Pattern Recognition, Seattle, CVPR 2020
 
 
-
 ### Table of Contents
 1. [Introduction](#introduction)
 1. [Citation](#citation)
@@ -22,12 +23,15 @@ IEEE Conference on Computer Vision and Pattern Recognition, Seattle, CVPR 2020
 1. [Installation](#installation)
 1. [Testing Pre-trained Models](#testing-pre-trained-models)
 1. [Downloading Results](#downloading-results)
-<!-- 1. [Training New Models](#training-new-models)  -->
+1. [Training New Models](#training-new-models) 
 
 ### Introduction
 
 We propose a **B**lurry video frame **IN**terpolation method to reduce motion blur and up-convert frame rate simultaneously.
 We provide videos [here](https://www.youtube.com/watch?v=C_bL9YQJU1w).
+
+Futher more, in the journal version (accepted by TIP), we also extend our model for joint frame interpolation and deblurring with compression artifacts, joint frame interpolation and super-resolution.
+We provide videos [here](https://www.youtube.com/watch?v=IjRvaAe1HME&ab_channel=MAOLAO).
 
 ### Citation
 
@@ -38,6 +42,14 @@ If you find the code and datasets useful in your research, please cite:
         author    = {Shen, Wang and Bao, Wenbo and Zhai, Guangtao and Chen, Li and Min, Xiongkuo and Gao, Zhiyong}, 
         title     = {Blurry Video Frame Interpolation},
         booktitle = {IEEE Conference on Computer Vision and Pattern Recognition},
+        year      = {2020}
+    }
+
+[Frame interpolation and enhancement](https://github.com/laomao0/BIN)
+     @inproceedings{BIN,
+        author    = {Shen, Wang and Bao, Wenbo and Zhai, Guangtao and Chen, Li and Min, Xiongkuo and Gao, Zhiyong}, 
+        title     = {Video Frame Interpolation and Enhancement via Pyramid Recurrent Framework},
+        booktitle = {IEEE Transactions on Image Processing},
         year      = {2020}
     }
 
@@ -75,13 +87,15 @@ Download repository:
 
 ### Make Adobe240 blur dataset
 
+   If you want to directly download the testset, please refer to 5.
+
 1. Download the Adobe240 original videos http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/DeepVideoDeblurring_Dataset_Original_High_FPS_Videos.zip
 
-2. Then de-compress those videos into a folder: Adobe_240fps_original_high_fps_videos
+2. Then de-compress those videos into a folder: Adobe_240fps_dataset/Adobe_240fps_original_high_fps_videos
 
 The structure of the folder is as following:
 
-    Adobe_240fps_original_high_fps_videos -- 720p_240fps_1.mov
+    Adobe_240fps_original_high_fps_videos   -- 720p_240fps_1.mov
                                             -- 720p_240fps_2.mov
                                             -- 720p_240fps_3.mov
                                             -- ...
@@ -116,30 +130,110 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
                             folder_1 -- 00017.png 00025.png ....
                             folder_2 -- 00017.png 00025.png ....
 
-### Testing Pre-trained Models
+5. For those who only want the Adobe240 blur testset with ground-truth frames, we provide download links.
+   For the Adobe240 blur train set, which is too large, we suggest users to use high-fps vidoes to generate.
 
-1. Download pretrained models,
+   Adobe_240fps_dataset/test_blur: https://drive.google.com/file/d/1Lt__BO1cshm6rayCVmDJfgMxT2cLqS5s/view?usp=sharing
+   Adobe_240fps_dataset/test: https://drive.google.com/file/d/11QLEfgh6JMf1FRy9XY798IkzwAOWXNk_/view?usp=sharing
+   Adobe_240fps_dataset/test_list: https://drive.google.com/file/d/1Bf_Mp_ny2N1bhUkVCo3kBYgLCWPe5Xf7/view?usp=sharing
+
+
+
+### Demo using Pre-trained Models
+
+1. Download pretrained model trained on Adobe240 blur training set,
 
     $ cd model_weights
-    $ download the model for Adobe240 dataset https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9
+    $ download the model for Adobe240 dataset: https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9
 
-2. run the script
+2. Download the demo vidoes
 
-    $ bash run_bin_stage4.sh
+    $ cd demo_vidoes
+    $ mkdir demo_blur
+    $ download the data at https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing, then put it into demo_blur folder 
 
-3. check the results
 
-the logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
+3. Run the script
 
-test_summary.log records PSNR, SSIM of each video folders
+    $ cd ..
+    $ mkdir demo_results
+    $ cd ..
+    $ bash demo.sh
 
-<!-- ### Training New Models
 
-If you want to train the model on our own data
+### Testing Pre-trained Models (Performance Evaluation)
 
-    $ cd BIN
-    $ bash train.sh -->
+1. Download pretrained model trained on Adobe240 blur training set,
 
+    $ cd model_weights
+    $ download the model for Adobe240 dataset https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing
+
+2. Run the script
+
+    $ bash test.sh
+
+3. Check the results
+
+    the logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
+
+    test_summary.log records PSNR, SSIM of each video folders
+
+    We get the following performance:
+
+    Frame Interpolation PSNR/SSIM : 33.31/0.9372
+    Frame Deblurring    PSNR/SSIM : 33.33/0.9319
+
+4. Besides, we also provide our results on adobe240 blur test set here: 
+
+   https://drive.google.com/file/d/1Bf3PokOqXol2z6_W819bLwU_tZrxDoxe/view?usp=sharing
+   
+   the downloaded zip file includes:
+
+   a. image folders contains results: 720p_240fps_1 -- 00021.png 00025.png ....
+                                      GOPR9635      -- 00021.png 00025.png ....
+                                      ....          -- 00021.png 00025.png ....
+                                
+   b. test.log : records each img's evaluation performance
+
+   c. test_summary.log : records the folder's average performance
+
+
+### Training New Models
+
+    If you want to train the model on our own data
+
+    $ bash train.sh ( to be added)
+
+    
+
+### For joint frame interpolation and super-resolution task
+
+    In our extented work, we extend our model for joint frame interpolation and super-resolution task.
+
+    We provide the operations for user to evaluate our model on Vimeo90K dataset.
+
+1. Download Vimeo_septuplet dataset
+
+    $ cd Vimeo90k_SR
+    $ mkdir vimeo_septuplet
+    $ download http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip [82G]
+
+2. Create dataset using matlab bicubic function
+
+    we generate the data using matlab2015b installed on the Ubuntu system.
+
+    $ cd data_scripts
+    $ cd vimeo90k_sr
+    $ matlab -nodesktop -nosplash -r generate_LR_Vimeo90K
+
+
+3. Download the model trained on Vimeo90k-septuplet set.
+
+    To be added
+
+4. Run the script
+
+    To be added
 
 
 ### Contact

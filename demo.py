@@ -28,18 +28,6 @@ import options.options as option
 import cv2
 from models import create_model
 
-use_default_ssim = 1
-if use_default_ssim == 1:
-    from skimage.measure import compare_ssim,compare_psnr
-    def my_compare_ssim(img1,img2):
-        ssim = compare_ssim(img1, img2, multichannel=True)
-        return ssim
-    ssim_msg = 'skimage.measure.ssim'
-else:
-    from  utils.util import calculate_ssim as my_compare_ssim
-    from  utils.util import calculate_psnr as compare_psnr
-    ssim_msg = 'our ssim'
-
 
 def read_image(img_path):
     '''read one image from img_path
@@ -79,7 +67,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--netName", type=str, required=True)
     parser.add_argument("--input_path", type=str, required=True)
-    parser.add_argument("--gt_path", type=str, required=True)
     parser.add_argument("--output_path", type=str, required=True)
     parser.add_argument("--deblur_model_path", type=str)
     parser.add_argument("--interp_model_path", type=str)
@@ -115,14 +102,13 @@ def main():
 
     # saving pathd
     INPUT_PATH = args.input_path
-    GT_PATH = args.gt_path
-    RESULT_PATH = os.path.join(args.output_path, str(N_frames* val_fps)+"fps_test_results")
+    RESULT_PATH = args.output_path
     if not os.path.exists(RESULT_PATH):
         os.makedirs(RESULT_PATH, exist_ok=True)
+    gen_dir = RESULT_PATH
 
 
     print("We interp the " + str(val_fps) + " fps blurry video to " + str(round(1/args.time_step)*val_fps) + " fps slow-motion video!")
-    print("We check the our interpolated results using the test dataset to check psnr and ssim!")
 
     flip_test = False
     PAD = 32
@@ -140,72 +126,28 @@ def main():
     which_model = args.netName
     if 'bin' in which_model:
         model = create_model(opt)
-    else:
-        print("Error in Model")
-        assert 1 == 0
 
-
-    torch.backends.cudnn.benchmark = True  # to speed up the
-
-    # ============================================================== #
-    #                       Load Net Model                           #
-    # ============================================================== #
+    torch.backends.cudnn.benchmark = True  
 
     our_model = False
     if 'bin' in which_model:
         our_model = True
 
     subdir = sorted(os.listdir(INPUT_PATH))  # folder 0 1 2 3...
-    gen_dir = os.path.join(RESULT_PATH, opt['name'])
-    if not os.path.exists(gen_dir):
-        os.mkdir(gen_dir)
+    
 
-
-    # ============================================================== #
-    #                       Logger                                   #
-    # ============================================================== #
-
-    util.setup_logger('base', gen_dir, 'test', level=logging.INFO, screen=True, tofile=True)
-    util.setup_logger('base_summary', gen_dir, 'test_summary', level=logging.INFO, screen=True, tofile=True)
-    logger = logging.getLogger('base')
-    logger_summary = logging.getLogger('base_summary')
-
-    #### log info
-    logger.info('In Data: {} '.format(INPUT_PATH))
-    logger.info('Padding mode: {}'.format(PAD))
-    logger.info('Model path: {}'.format(model_path))
-    logger.info('Save images: {}'.format(RESULT_PATH))
-    logger.info('Flip test: {}'.format(flip_test))
-    logger.info('Use ssin method {}'.format(ssim_msg))
-
-    if our_model:
-        pstring_model_size = 'Num. of model parameters is : {}'.format(str(count_network_parameters(model.netG)))
-    else:
-        pstring_model_size = 'Num. of model parameters is : {}'.format(str(count_network_parameters(model)))
-    logger.info(pstring_model_size)
+    print('In Data: {} '.format(INPUT_PATH))
+    print('Padding mode: {}'.format(PAD))
+    print('Model path: {}'.format(model_path))
+    print('Save images: {}'.format(RESULT_PATH))
 
     # ============================================================== #
     #                       Initialize                               #
     # ============================================================== #
     total_run_time =    AverageMeter()
-    interp_error =      AverageMeter()
-    psnr_interp_total = AverageMeter()  #  interp total psnr
-    ssim_interp_total = AverageMeter()
-    psnr_deblur_total = AverageMeter()  # deblur psnr
-    ssim_deblur_total = AverageMeter()  # deblur ssim
-    psnr_blurry_total = AverageMeter()
-    ssim_blurry_total = AverageMeter()
     tot_timer =         AverageMeter()
     proc_timer =        AverageMeter()
     end = time.time()
-
-    interp_error_set =      AverageMeter()
-    psnr_interp_total_set = AverageMeter()  # interp total psnr for a folder
-    ssim_interp_total_set = AverageMeter()
-    psnr_deblur_total_set = AverageMeter()  # deblur psnr
-    ssim_deblur_total_set = AverageMeter()  # deblur ssim
-    psnr_blurry_total_set = AverageMeter()
-    ssim_blurry_total_set = AverageMeter()
 
     time_offsets_all = [kk * 1.0 / N_frames for kk in range(1, int(N_frames), 1)]
     time_step = range(0, N_frames - 1)
@@ -222,27 +164,14 @@ def main():
     for dir in subdir:
 
         cnt = 0
-        if 'lstm' in which_model: # TOD sltm
-            model.prev_state = None
-            model.hidden_state = None
-
-        interp_error.reset()
-        psnr_interp_total.reset()
-        ssim_interp_total.reset()
-        psnr_deblur_total.reset()
-        ssim_deblur_total.reset()
-        psnr_blurry_total.reset()
-        ssim_blurry_total.reset()
+        model.prev_state = None
+        model.hidden_state = None
 
         if not os.path.exists(os.path.join(gen_dir, dir)):
             os.mkdir(os.path.join(gen_dir, dir))
 
-        logger.info("The results for dir:{}".format(dir))
-        logger_summary.info("The results for dir:{}".format(dir))
-
-        frames_path = os.path.join(INPUT_PATH,dir)  # blur path
-        sharp_path = os.path.join(GT_PATH,dir)
-        frames = sorted(os.listdir(frames_path)) #[0:5] #debug
+        frames_path = os.path.join(INPUT_PATH,dir)
+        frames = sorted(os.listdir(frames_path))
 
         shift_file = 1
         offset_file = 0
@@ -267,20 +196,13 @@ def main():
             for i in first_5_blurry_list:
                 tmp_num = int(first_frame_num + i)
                 tmp_num_name = str(tmp_num).zfill(5) + '.png'
-                if our_model and args.direct_interp == True:
-                    arguments_strFirst.append(os.path.join(sharp_path, tmp_num_name))
-                else:
-                    arguments_strFirst.append(os.path.join(frames_path, tmp_num_name))
-
+                arguments_strFirst.append(os.path.join(frames_path, tmp_num_name))
 
             arguments_strSecond = []
             for i in second_5_blurry_list:
                 tmp_num = int(first_frame_num + i)
                 tmp_num_name = str(tmp_num).zfill(5) + '.png'
-                if our_model and args.direct_interp == True:
-                    arguments_strSecond.append(os.path.join(sharp_path, tmp_num_name))
-                else:
-                    arguments_strSecond.append( os.path.join(frames_path, tmp_num_name))
+                arguments_strSecond.append( os.path.join(frames_path, tmp_num_name))
 
             first_sharp_name = str(int(first_frame_num + first_5_blurry_list[2])).zfill(5) + '.png'
             second_sharp_name = str(int(first_frame_num + second_5_blurry_list[2])).zfill(5) + '.png'
@@ -312,21 +234,12 @@ def main():
                 frame_indexs = range(0,7)
                 print("interpolate all 7 frames")
 
-            # handle each mid-frames
-
             for frame_time_step,frame_index  in zip(time_step,frame_indexs):
 
                 middle_frame_num = interpolated_sharp_list[frame_index]  # set 4 as the middle
                 middle_frame_name = str(middle_frame_num).zfill(5) + '.png'
                 arguments_strOut = os.path.join(gen_dir, dir, middle_frame_name)
-                # arguments_strUpload = os.path.join(RESULT_PATH_UPLOAD, upload_frame_name)
 
-                # gt_path = os.path.join(GT_PATH, dir, "frame10i11.png")
-                gt_middle_path = os.path.join(GT_PATH, dir, middle_frame_name)
-                first_gt_deblur_path = os.path.join(GT_PATH, dir, first_gt_deblur_name)
-                second_gt_deblur_path = os.path.join(GT_PATH, dir, second_gt_deblur_name)
-                first_gt_sharp_path = os.path.join(sharp_path, first_sharp_name)
-                second_gt_sharp_path = os.path.join(sharp_path, second_sharp_name)
                 arguments_strOut_first_res_deblur_path = os.path.join(gen_dir, dir, first_gt_deblur_name)
                 arguments_strOut_second_res_deblur_path = os.path.join(gen_dir, dir, second_gt_deblur_name)
 
@@ -343,8 +256,8 @@ def main():
                 if not channel == 3:
                     continue
 
-                assert ( intWidth <= 1280)  # while our approach works with larger images, we do not recommend it unless you are aware of the implications
-                assert ( intHeight <= 720)  # while our approach works with larger images, we do not recommend it unless you are aware of the implications
+                assert ( intWidth <= 1280)
+                assert ( intHeight <= 720)
 
                 if intWidth != ((intWidth >> 7) << 7):
                     intWidth_pad = (((intWidth >> 7) + 1) << 7)  # more than necessary
@@ -405,106 +318,11 @@ def main():
                 if index < len(frames)-2:
                     if not os.path.exists(arguments_strOut_second_res_deblur_path):
                         cv2.imwrite(arguments_strOut_second_res_deblur_path, np.round(x1_s).astype(numpy.uint8))
-                        gt = read_image_np(second_gt_deblur_path)
-                        res = read_image_np(arguments_strOut_second_res_deblur_path)
-                        psnr_tmp = compare_psnr(res, gt)
-                        ssim_tmp = my_compare_ssim(res, gt)
-                        psnr_deblur_total.update(psnr_tmp, 1)
-                        ssim_deblur_total.update(ssim_tmp, 1)
-                        pstring = "Interp PSNR : " + str(round(psnr_tmp, 4)) + " Interp SSIM : "+ str(round(ssim_tmp, 4))
-                        logger.info(pstring)
 
 
-                #----------------------------------------second img------------------------------------#
                 if not os.path.exists(arguments_strOut_first_res_deblur_path):
                     cv2.imwrite(arguments_strOut_first_res_deblur_path, np.round(x0_s).astype(numpy.uint8) )
-                    gt = read_image_np(first_gt_deblur_path )
-                    res = read_image_np(arguments_strOut_first_res_deblur_path )
-                    psnr_tmp = compare_psnr(res, gt)
-                    ssim_tmp = my_compare_ssim(res, gt)
-                    psnr_deblur_total.update(psnr_tmp, 1)
-                    ssim_deblur_total.update(ssim_tmp, 1)
-                    pstring = "Interp PSNR : " + str(round(psnr_tmp, 4)) + " Interp SSIM : " + str(round(ssim_tmp, 4))
-                    logger.info(pstring)
 
-
-                #----------------------------------------third img------------------------------------#
-                rec_rgb = read_image_np(arguments_strOut )
-                gt_rgb = read_image_np(gt_middle_path )
-
-                diff_rgb = 128.0 + rec_rgb - gt_rgb
-                avg_interp_error_abs = np.mean(np.abs(diff_rgb - 128.0))
-
-                interp_error.update(avg_interp_error_abs, 1)
-
-                mse = numpy.mean((diff_rgb - 128.0) ** 2)
-                if mse == 0:
-                    return 100.0
-                PIXEL_MAX = 255.0
-                psnr = 20 * math.log10(PIXEL_MAX / math.sqrt(mse))
-                psnr_ = compare_psnr(rec_rgb, gt_rgb)
-                ssim_tmp = my_compare_ssim(rec_rgb, gt_rgb)
-                psnr_interp_total.update(psnr, 1)
-                ssim_interp_total.update(ssim_tmp, 1)
-
-                pstring = "deblur error / PSNR : " + str(round(avg_interp_error_abs, 4)) + " / " + str(round(psnr, 4))
-                logger.info(pstring)
-                # check blurry
-                blur = read_image_np(first_blurry_path )
-                psnr_tmp = compare_psnr(blur, gt_rgb)
-                ssim_tmp = my_compare_ssim(blur, gt_rgb)
-                psnr_blurry_total.update(psnr_tmp, 1)
-                ssim_blurry_total.update(ssim_tmp, 1)
-                pstring = "blurry PSNR : " + str(round(psnr_tmp, 4)) + " blurry SSIM : " + str(round(ssim_tmp, 4)) + '\n' + first_blurry_path
-                logger.info(pstring)
-
-
-
-
-        pstring = "The results for dir:" + dir
-        logger_summary.info(pstring)
-        pstring = "The average interpolation error " + str(round(interp_error.avg, 4))
-        logger_summary.info(pstring)
-        # end for folders
-
-        pstring = "Avg. folder" + \
-                    " blurry psnr " + str(psnr_blurry_total.avg) + \
-                    " deblur psnr " + str(psnr_interp_total.avg) + \
-                    " interp psnr " + str(psnr_deblur_total.avg) + \
-                    " blurry ssim " + str(ssim_blurry_total.avg) + \
-                    " deblur ssim " + str(ssim_interp_total.avg) + \
-                    " interp ssim " + str(ssim_deblur_total.avg)
-
-        logger_summary.info(pstring)
-        interp_error_set.update(interp_error.avg, 1)
-        psnr_interp_total_set.update(psnr_interp_total.avg, 1)  # interp total psnr
-        ssim_interp_total_set.update(ssim_interp_total.avg, 1)
-        psnr_deblur_total_set.update(psnr_deblur_total.avg, 1)  # deblur psnr
-        ssim_deblur_total_set.update(ssim_deblur_total.avg, 1)  # deblur ssim
-        psnr_blurry_total_set.update(psnr_blurry_total.avg, 1)
-        ssim_blurry_total_set.update(ssim_blurry_total.avg, 1)
-
-    pstring = "The results for Adobe dataset"
-    logger_summary.info(pstring)
-    pstring = "The average interpolation error " + str(round(interp_error_set.avg, 4))
-    logger_summary.info(pstring)
-    # end for folders
-    pstring = "Avg. testset " + \
-                " interp psnr " + str(psnr_deblur_total_set.avg) + \
-                " blurry psnr" + str(psnr_blurry_total_set.avg) + \
-                " deblur psnr" + str(psnr_interp_total_set.avg) + \
-                " interp ssim " + str(ssim_deblur_total_set.avg) + \
-                " blurry ssim" + str(ssim_blurry_total_set.avg) + \
-                " deblur ssim" + str(ssim_interp_total_set.avg)
-
-
-    logger_summary.info(pstring)
-
-    pstring = "runtime per image [s] : %.4f\n" % total_run_time.avg + \
-                "CPU[1] / GPU[0] : 1 \n" + \
-                "Extra Data [1] / No Extra Data [0] : 1"
-    logger_summary.info(pstring)
-    logger_summary.info(pstring_model_size)
 
 if __name__ == '__main__':
     main()

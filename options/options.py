@@ -8,12 +8,9 @@ import random
 
 def parse(opt_path, is_train=True):
 
-    # if os.path.exists('./options/train/my_train_EDVR_L.yml'):
-    #     print('ok')
 
     with open(opt_path, mode='r') as f:
         opt = yaml.load(f, Loader=Loader)
-    # export CUDA_VISIBLE_DEVICES
 
     if is_train:
         gpu_list = ','.join(str(x) for x in opt['gpu_ids'])
@@ -21,10 +18,7 @@ def parse(opt_path, is_train=True):
         print('export CUDA_VISIBLE_DEVICES=' + gpu_list)
     else:
         pass
-        # gpu_list = ','.join(str(x) for x in opt['gpu_ids'][0:1])
-        # os.environ['CUDA_VISIBLE_DEVICES'] = gpu_list
-        # print('export CUDA_VISIBLE_DEVICES=' + gpu_list)
-
+    
     opt['is_train'] = is_train
     if opt['distortion'] == 'sr':
         scale = opt['scale']
