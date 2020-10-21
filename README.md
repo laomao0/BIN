@@ -143,20 +143,26 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 1. Download pretrained model trained on Adobe240 blur training set,
     
     $ cd model_weights
+
     $ download the model for [Adobe240 dataset](https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9)
 
 2. Download the demo vidoes
 
     $ cd demo_vidoes
+
     $ mkdir demo_blur
+
     $ download the data at [link](https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing), then put it into demo_blur folder 
 
 
 3. Run the script
 
     $ cd ..
+
     $ mkdir demo_results
+
     $ cd ..
+    
     $ bash demo.sh
 
 
@@ -165,6 +171,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 1. Download pretrained model trained on Adobe240 blur training set,
 
     $ cd model_weights
+
     $ download the model for [Adobe240 dataset]( https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing)
 
 2. Run the script
@@ -173,7 +180,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 
 3. Check the results
 
-    the logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
+The logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
 
     test_summary.log records PSNR, SSIM of each video folders
 
@@ -184,7 +191,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 
 4. Besides, we also provide our results on adobe240 blur test set [here](https://drive.google.com/file/d/1Bf3PokOqXol2z6_W819bLwU_tZrxDoxe/view?usp=sharing): 
    
-   the downloaded zip file includes:
+The downloaded zip file includes:
 
    a. image folders contains results: 720p_240fps_1 -- 00021.png 00025.png ....
                                       GOPR9635      -- 00021.png 00025.png ....
@@ -197,7 +204,7 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 
 ### Training New Models
 
-    If you want to train the model on our own data
+If you want to train the model on our own data
 
     $ bash train.sh ( to be added)
 
@@ -205,14 +212,16 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 
 ### For joint frame interpolation and super-resolution task
 
-    In our extented work, we extend our model for joint frame interpolation and super-resolution task.
+In our extented work, we extend our model for joint frame interpolation and super-resolution task.
 
     We provide the operations for user to evaluate our model on Vimeo90K dataset.
 
 1. Download Vimeo_septuplet dataset
 
     $ cd Vimeo90k_SR
+
     $ mkdir vimeo_septuplet
+
     $ download [link](http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip) [82G]
 
 2. Create dataset using matlab bicubic function
@@ -220,7 +229,9 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
     we generate the data using matlab2015b installed on the Ubuntu system.
 
     $ cd data_scripts
+
     $ cd vimeo90k_sr
+
     $ matlab -nodesktop -nosplash -r generate_LR_Vimeo90K
 
 
