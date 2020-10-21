@@ -143,13 +143,17 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 1. Download pretrained model trained on Adobe240 blur training set,
     
         $ cd model_weights
-        $ download the model for [Adobe240 dataset](https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9)
+        $ download the model for Adobe240 dataset
+    
+    [download link](https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9)
 
 2. Download the demo vidoes
 
         $ cd demo_vidoes
         $ mkdir demo_blur
-        $ download the data at [link](https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing), then put it into demo_blur folder 
+        $ download the data at the following link, then put it into demo_blur folder 
+
+    [download link](https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing)
 
 
 3. Run the script
@@ -165,7 +169,9 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 1. Download pretrained model trained on Adobe240 blur training set,
 
         $ cd model_weights
-        $ download the model for [Adobe240 dataset]( https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing)
+        $ download the model for Adobe240 dataset
+
+    [download link]( https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing)
 
 2. Run the script
 
@@ -213,7 +219,9 @@ In our extented work, we extend our model for joint frame interpolation and supe
 
         $ cd Vimeo90k_SR
         $ mkdir vimeo_septuplet
-        $ download [link](http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip) [82G]
+        $ download data
+
+    [download link](http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip) [82G]
 
 2. Create dataset using matlab bicubic function
 
