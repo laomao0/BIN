@@ -142,64 +142,57 @@ It contains 7 folders, including full_sharp, test, test_blur, test_list, train, 
 
 1. Download pretrained model trained on Adobe240 blur training set,
     
-    $ cd model_weights
-
-    $ download the model for [Adobe240 dataset](https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9)
+        $ cd model_weights
+        $ download the model for [Adobe240 dataset](https://drive.google.com/open?id=1KGu8bLcIHODGQKw8fZ4NCVB1VgSVepo9)
 
 2. Download the demo vidoes
 
-    $ cd demo_vidoes
-
-    $ mkdir demo_blur
-
-    $ download the data at [link](https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing), then put it into demo_blur folder 
+        $ cd demo_vidoes
+        $ mkdir demo_blur
+        $ download the data at [link](https://drive.google.com/file/d/10c6jMuBCQmXzEtoRRZt90IMfXq6weqrM/view?usp=sharing), then put it into demo_blur folder 
 
 
 3. Run the script
 
-    $ cd ..
-
-    $ mkdir demo_results
-
-    $ cd ..
-    
-    $ bash demo.sh
+        $ cd ..
+        $ mkdir demo_results
+        $ cd ..
+        $ bash demo.sh
 
 
 ### Testing Pre-trained Models (Performance Evaluation)
 
 1. Download pretrained model trained on Adobe240 blur training set,
 
-    $ cd model_weights
-
-    $ download the model for [Adobe240 dataset]( https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing)
+        $ cd model_weights
+        $ download the model for [Adobe240 dataset]( https://drive.google.com/file/d/1FtuZTKeExX2rrlyNGnWpxd8wGWZTftMg/view?usp=sharing)
 
 2. Run the script
 
-    $ bash test.sh
+        $ bash test.sh
 
 3. Check the results
 
 The logging file and images are saved at --output_path/60fps_test_results/adobe_stage4
 
-    test_summary.log records PSNR, SSIM of each video folders
+test_summary.log records PSNR, SSIM of each video folders
 
-    We get the following performance:
+We get the following performance:
 
-    Frame Interpolation PSNR/SSIM : 33.31/0.9372
-    Frame Deblurring    PSNR/SSIM : 33.33/0.9319
+        Frame Interpolation PSNR/SSIM : 33.31/0.9372
+        Frame Deblurring    PSNR/SSIM : 33.33/0.9319
 
 4. Besides, we also provide our results on adobe240 blur test set [here](https://drive.google.com/file/d/1Bf3PokOqXol2z6_W819bLwU_tZrxDoxe/view?usp=sharing): 
    
 The downloaded zip file includes:
 
-   a. image folders contains results: 720p_240fps_1 -- 00021.png 00025.png ....
-                                      GOPR9635      -- 00021.png 00025.png ....
-                                      ....          -- 00021.png 00025.png ....
-                                
-   b. test.log : records each img's evaluation performance
+        a. image folders contains results: 720p_240fps_1 -- 00021.png 00025.png ....
+                                            GOPR9635      -- 00021.png 00025.png ....
+                                            ....          -- 00021.png 00025.png ....
+                                        
+        b. test.log : records each img's evaluation performance
 
-   c. test_summary.log : records the folder's average performance
+        c. test_summary.log : records the folder's average performance
 
 
 ### Training New Models
@@ -218,30 +211,26 @@ In our extented work, we extend our model for joint frame interpolation and supe
 
 1. Download Vimeo_septuplet dataset
 
-    $ cd Vimeo90k_SR
-
-    $ mkdir vimeo_septuplet
-
-    $ download [link](http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip) [82G]
+        $ cd Vimeo90k_SR
+        $ mkdir vimeo_septuplet
+        $ download [link](http://data.csail.mit.edu/tofu/dataset/vimeo_septuplet.zip) [82G]
 
 2. Create dataset using matlab bicubic function
 
-    we generate the data using matlab2015b installed on the Ubuntu system.
+We generate the data using matlab2015b installed on the Ubuntu system.
 
-    $ cd data_scripts
-
-    $ cd vimeo90k_sr
-
-    $ matlab -nodesktop -nosplash -r generate_LR_Vimeo90K
+        $ cd data_scripts
+        $ cd vimeo90k_sr
+        $ matlab -nodesktop -nosplash -r generate_LR_Vimeo90K
 
 
 3. Download the model trained on Vimeo90k-septuplet set.
 
-    To be added
+        To be added
 
 4. Run the script
 
-    To be added
+        To be added
 
 
 ### Contact
